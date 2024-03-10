@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/Home"
+        android:title="Trang chủ"
+        android:icon="@drawable/ic_home"></item>
+
+    <item
+        android:id="@+id/xuly"
+        android:title="Xử lý"
+        android:icon="@drawable/ic_hospital"></item>
+
+    <item
+        android:id="@+id/map"
+        android:title="Vị trí"
+
+        android:icon="@drawable/ic_location"/>
+    <item
+        android:id="@+id/person"
+        android:title="Cá nhân"
+        android:icon="@drawable/ic_person"></item>
+</menu>

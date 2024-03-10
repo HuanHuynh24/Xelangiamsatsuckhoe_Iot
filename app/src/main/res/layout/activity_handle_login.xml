@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/my_primary"
+    android:gravity="center"
+    tools:context=".HandleLoginActivity"
+    android:weightSum="100">
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_weight="10"
+        android:src="@drawable/baseline_password_24">
+    </ImageView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="10"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="18dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tên đăng nhập: "
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_weight="1">
+        </TextView>
+        <EditText
+            android:id="@+id/edtNameuserLogin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:background="@drawable/btn_input_phone"
+            android:textColorHint="@color/my_primary"
+            android:elevation="5dp"
+            android:hint="Tên đăng nhập"
+            android:padding="8dp"
+            android:layout_weight="2"
+            android:layout_marginStart="4dp">
+        </EditText>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="18dp"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại:"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_weight="1">
+        </TextView>
+        <EditText
+            android:id="@+id/edtPhonenumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLength="10"
+            android:background="@drawable/btn_input_phone"
+            android:elevation="5dp"
+            android:textColorHint="@color/my_primary"
+            android:hint="Số điện thoại"
+            android:padding="8dp"
+            android:layout_weight="2"
+            android:layout_marginStart="4dp"
+            >
+        </EditText>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="10"
+        android:layout_marginBottom="18dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Mã OTP:"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_weight="1">
+        </TextView>
+        <EditText
+            android:id="@+id/edtOtp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:background="@drawable/btn_input_phone"
+            android:elevation="5dp"
+            android:maxLength="6"
+            android:hint="Mã OTP"
+            android:textColorHint="@color/my_primary"
+            android:padding="8dp"
+            android:layout_weight="2"
+            android:layout_marginStart="4dp"
+            >
+        </EditText>
+
+    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="9dp"
+            android:layout_weight="20"
+            android:background="@drawable/rectangle_bg"
+            android:backgroundTint="@color/my_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/btn_sendOtp_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_gray"
+                android:text="Gửi mã OTP"
+                android:textColor="@color/my_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"></Button>
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_gray"
+                android:text="Đăng nhập"
+                android:textColor="@color/my_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"></Button>
+        </RelativeLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/LoginProgressBar"
+        android:layout_weight="20"
+        android:layout_width="32dp"
+        android:layout_height="32dp">
+    </ProgressBar>
+    <TextView
+        android:id="@+id/tvResendOtp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:letterSpacing="0.08"
+        android:text="Resend OTP in 60s">
+    </TextView>
+</LinearLayout>

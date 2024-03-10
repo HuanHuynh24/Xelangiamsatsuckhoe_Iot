@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "254578969520",
+    "project_id": "giamsatsuckhoe-iot",
+    "storage_bucket": "giamsatsuckhoe-iot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254578969520:android:21b75a58ae634e872aa475",
+        "android_client_info": {
+          "package_name": "com.example.gimstsckho_iot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXLSZs4FaAqMsv9DZ1MNtwqVNJR-qS2OY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
