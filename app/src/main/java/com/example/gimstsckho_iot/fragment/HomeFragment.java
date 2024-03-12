@@ -12,6 +12,7 @@ import android.widget.GridView;
 import com.example.gimstsckho_iot.model.ItemAdapterHome;
 import com.example.gimstsckho_iot.R;
 import com.example.gimstsckho_iot.Adapter.myAdapter;
+import com.example.gimstsckho_iot.model.showEnableGPSDialog;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        showEnableGPSDialog showEnableGPSDialog = new showEnableGPSDialog(getActivity());
+        if(!showEnableGPSDialog.isGPSEnabled()){
+            showEnableGPSDialog.handleEnableGPSDialog();
+        }
         gv = rootView.findViewById(R.id.girdview);
         mylist = new ArrayList<>();
         for(int i=0;i< imgName.length; i++){

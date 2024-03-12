@@ -64,8 +64,6 @@ public class LoginOtpActivity extends AppCompatActivity {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, enterOtp);
             if(enterOtp.length()==6){
                 signIn(credential);
-            } else {
-                loginOtp.setError("Mã không chính xác");
             }
         });
 

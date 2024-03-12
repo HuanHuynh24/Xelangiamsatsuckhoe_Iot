@@ -51,8 +51,8 @@ public class UserFragment extends Fragment {
         String phonenumber = sharedPreferences.getString("phone", null);
 
         String username = sharedPreferences.getString("userName", null);
-        info_username.setText("Tên người dùng: " + phonenumber);
-        phonenumber_user.setText("Số điện thoại: " + username);
+        info_username.setText("Tên người dùng: " + username);
+        phonenumber_user.setText("Số điện thoại: " + phonenumber);
 
         // Thêm các cài đặt cho người dùng
         ArrayList<ItemAdapterOption> myArray = new ArrayList<>();

@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.gimstsckho_iot.model.SaveSharedPreferences;
 import com.example.gimstsckho_iot.model.userModel;
@@ -30,6 +32,7 @@ public class LoginUserActivity extends AppCompatActivity {
     Button btnLoginLetInMe;
     ProgressBar progressBar;
     userModel userModel;
+    String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,7 @@ public class LoginUserActivity extends AppCompatActivity {
     }
     private  void setUsername(){
 
-        String userName = loginUsername.getText().toString();
+        userName = loginUsername.getText().toString();
         if(userName.length()<=3 | userName.isEmpty())
         {
             loginUsername.setError("Username có độ dài ít nhất 3 kí tự");
@@ -85,9 +88,11 @@ public class LoginUserActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Intent intent = new Intent(LoginUserActivity.this, MainActivity.class);
-                    SaveSharedPreferences.SaveSharedPreferences(LoginUserActivity.this, phoneNumber, loginUsername.getText().toString());
+                    SaveSharedPreferences.SaveSharedPreferences(LoginUserActivity.this, phoneNumber, userName);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                } else{
+                    Log.v("kiemtra","ghi thất bại");
                 }
             }
         });
