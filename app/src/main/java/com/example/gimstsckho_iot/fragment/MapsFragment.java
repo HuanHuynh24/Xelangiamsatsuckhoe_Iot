@@ -20,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -64,9 +65,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         locationUpdater = new LocationUpdater(requireContext());
-        LatLng position2 = new LatLng(10.762622, 106.660172);
-        markerWheelchair = mMap.addMarker(new MarkerOptions().position(position2).title(username+" - Thiết bị"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position2, 13f));
         locationUpdater.setLocationUpdateListener(new LocationUpdater.LocationUpdateListener() {
             @Override
             public void onLocationUpdate(LatLng latLng) {
@@ -83,7 +81,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
             }
         });
         locationUpdater.startUpdatingLocation();
-
+        LatLng position2 = new LatLng(10.762622, 106.660172);
+        markerWheelchair = mMap.addMarker(new MarkerOptions().position(position2).title(username+" - Thiết bị")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position2, 13f));
     }
 
     private float calculateDistance(LatLng position1, LatLng position2) {

@@ -45,7 +45,7 @@ public class HandleLoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
     long timeSecond = 60L;
-    TextView tvResendOtp;
+    TextView tvResendOtp, txtError;
     String mVerificationId;
     PhoneAuthProvider.ForceResendingToken mforceResendingToken;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -64,7 +64,8 @@ public class HandleLoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.LoginProgressBar);
         btnLogin = findViewById(R.id.btn_login);
         tvResendOtp = findViewById(R.id.tvResendOtp);
-
+        txtError = findViewById(R.id.textError);
+        txtError.setVisibility(View.INVISIBLE);
         edtOtp.setEnabled(false);
         btnLogin.setVisibility(View.GONE);
         progressBar.setVisibility(View.INVISIBLE);
@@ -101,22 +102,25 @@ public class HandleLoginActivity extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
                         if(snapshots.isEmpty()){
-                            isExistUsername(username);
-                            isExistPhonenumber(phonenumber);
+                            isExistAccount(phonenumber, username);
                         } else {
                             handleSendOtp(phonenumber, false);
                             btnLogin.setVisibility(View.VISIBLE);
                             btnLogin.setEnabled(false);
                             btnSendOtp.setVisibility(View.GONE);
                             edtOtp.setEnabled(true);
+                            txtError.setVisibility(View.INVISIBLE);
                         }
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
     }
 
-    private void isExistUsername(String username){
+
+
+    private void isExistAccount(String phonenumber, String username){
         FirebaseUtil.userQueryUser()
+                .whereEqualTo("phoneNumber", phonenumber)
                 .whereEqualTo("userName", username)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -124,22 +128,8 @@ public class HandleLoginActivity extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
                         if (snapshots.isEmpty()){
-                            edtUsername.setError("Tên đăng nhập không chính xác");
-                        }
-                    }
-                });
-    };
+                            txtError.setVisibility(View.VISIBLE);
 
-    private void isExistPhonenumber(String phonenumber){
-        FirebaseUtil.userQueryUser()
-                .whereEqualTo("phoneNumber", phonenumber)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
-                        if (snapshots.isEmpty()){
-                            edtPhonenumber.setError("Số điện thoại không chính xác");
                         }
                     }
                 });
@@ -155,7 +145,7 @@ public class HandleLoginActivity extends AppCompatActivity {
                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                        Toast.makeText(HandleLoginActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(HandleLoginActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
                         isPresent(false);
                     }
 

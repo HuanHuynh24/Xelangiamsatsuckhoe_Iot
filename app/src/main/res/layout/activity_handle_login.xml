@@ -115,6 +115,16 @@
         </EditText>
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/textError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tên đăng nhập hoặc số điện thoại không chính xác"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:textSize="16dp">
+
+    </TextView>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
