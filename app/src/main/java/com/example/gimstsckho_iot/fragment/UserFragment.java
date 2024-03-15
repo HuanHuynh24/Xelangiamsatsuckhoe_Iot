@@ -18,6 +18,7 @@ import com.example.gimstsckho_iot.OptionLoginActivity;
 import com.example.gimstsckho_iot.R;
 import com.example.gimstsckho_iot.model.ItemAdapterOption;
 import com.example.gimstsckho_iot.Adapter.myAdapter_Listview;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -73,6 +74,7 @@ public class UserFragment extends Fragment {
         lv_account.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getActivity(), OptionLoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

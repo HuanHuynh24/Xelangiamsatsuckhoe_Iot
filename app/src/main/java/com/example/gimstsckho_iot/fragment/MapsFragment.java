@@ -64,6 +64,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         locationUpdater = new LocationUpdater(requireContext());
         locationUpdater.setLocationUpdateListener(new LocationUpdater.LocationUpdateListener() {
             @Override
