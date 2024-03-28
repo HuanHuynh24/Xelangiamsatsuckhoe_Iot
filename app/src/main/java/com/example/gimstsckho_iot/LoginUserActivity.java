@@ -88,7 +88,7 @@ public class LoginUserActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Intent intent = new Intent(LoginUserActivity.this, MainActivity.class);
-                    SaveSharedPreferences.SaveSharedPreferences(LoginUserActivity.this, phoneNumber, userName);
+                    SaveSharedPreferences.SaveSharedPreferences(LoginUserActivity.this, phoneNumber, userName, null);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 } else{

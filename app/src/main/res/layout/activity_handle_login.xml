@@ -102,7 +102,7 @@
             android:id="@+id/edtOtp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="number"
             android:background="@drawable/btn_input_phone"
             android:elevation="5dp"
             android:maxLength="6"

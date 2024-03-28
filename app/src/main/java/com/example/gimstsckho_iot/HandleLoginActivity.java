@@ -31,6 +31,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +53,7 @@ public class HandleLoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String phonenumber = "";
     String username = "";
-
+    String imageAvatarUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +104,7 @@ public class HandleLoginActivity extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
                         if(snapshots.isEmpty()){
-                            isExistAccount(phonenumber, username);
+                            txtError.setVisibility(View.VISIBLE);
                         } else {
                             handleSendOtp(phonenumber, false);
                             btnLogin.setVisibility(View.VISIBLE);
@@ -118,22 +120,7 @@ public class HandleLoginActivity extends AppCompatActivity {
 
 
 
-    private void isExistAccount(String phonenumber, String username){
-        FirebaseUtil.userQueryUser()
-                .whereEqualTo("phoneNumber", phonenumber)
-                .whereEqualTo("userName", username)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
-                        if (snapshots.isEmpty()){
-                            txtError.setVisibility(View.VISIBLE);
 
-                        }
-                    }
-                });
-    };
 
     private void handleSendOtp(String phonenumber, boolean isResend){
         isPresent(isResend);
@@ -174,21 +161,50 @@ public class HandleLoginActivity extends AppCompatActivity {
     }
 
     private void signIn(PhoneAuthCredential phoneAuthCredential){
-        mAuth.signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful())
-                {
-                    Intent intent =new Intent(HandleLoginActivity.this, MainActivity.class);
-                    SaveSharedPreferences.SaveSharedPreferences(HandleLoginActivity.this, phonenumber, username);
+        mAuth.signInWithCredential(phoneAuthCredential).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                getImageUser(new ImageUserCallback() {
+                    @Override
+                    public void onCallback(String imageUser) {
+                        if(imageUser != null) {
+                            imageAvatarUser = imageUser;
 
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(HandleLoginActivity.this, "Mã OTP không chính xác", Toast.LENGTH_SHORT).show();
-                }
+                            Intent intent = new Intent(HandleLoginActivity.this, MainActivity.class);
+                            SaveSharedPreferences.SaveSharedPreferences(HandleLoginActivity.this, phonenumber, username, imageAvatarUser);
+                            startActivity(intent);
+                        } else {
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(HandleLoginActivity.this, "Mã OTP không chính xác", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void getImageUser(ImageUserCallback callback) {
+        FirebaseUtil.userQueryUser()
+                .whereEqualTo("userName", username)
+                .whereEqualTo("phoneNumber", phonenumber)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
+                    String imageUser = null;
+                    if (!snapshots.isEmpty()) {
+                        imageUser = (String) snapshots.get(0).get("avatarUser");
+                    }
+                    callback.onCallback(imageUser);
+                })
+                .addOnFailureListener(e -> {
+                    // Xử lý lỗi nếu có
+                    callback.onCallback(null);
+                });
+    }
+
+    public interface ImageUserCallback {
+        void onCallback(String imageUser);
+    }
+
 
     private void setTextResend(){
         tvResendOtp.setEnabled(false);

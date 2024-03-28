@@ -20,7 +20,7 @@ public class FirebaseUtil {
         return false;
     }
     public static DocumentReference currentUserDetails(){
-        return FirebaseFirestore.getInstance().collection("users").document();
+        return FirebaseFirestore.getInstance().collection("users").document(currentUserId().getUid());
     }
 
     public static CollectionReference userQueryUser(){

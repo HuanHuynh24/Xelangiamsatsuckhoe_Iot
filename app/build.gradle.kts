@@ -31,6 +31,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -41,6 +44,9 @@ dependencies {
     implementation(files("D:/GimstsckhoIoT/app/libs/jtds-1.3.1.jar"))
     implementation("com.google.firebase:firebase-firestore:24.10.3")
     implementation("com.google.firebase:firebase-database:20.3.1")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation("androidx.navigation:navigation-fragment:2.6.0")
+    implementation("androidx.navigation:navigation-ui:2.6.0")
     testImplementation("junit:junit:4.13.2")
     implementation ("androidx.fragment:fragment:1.6.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -52,5 +58,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.android.gms:play-services-location:21.2.0")
+    implementation ("com.squareup.picasso:picasso:2.71828")
 
 }

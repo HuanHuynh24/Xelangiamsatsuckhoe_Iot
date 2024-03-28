@@ -10,12 +10,12 @@ import com.example.gimstsckho_iot.MainActivity;
 
 public class SaveSharedPreferences {
 
-
-    public static void SaveSharedPreferences(Context context, String phonenumber, String username){
+    public static void SaveSharedPreferences(Context context, String phonenumber, String username, String imageUser){
         SharedPreferences sharedPreferences = context.getSharedPreferences("Account", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("phone", phonenumber);
         editor.putString("userName", username);
+        editor.putString("avatarUser", imageUser);
         editor.apply();
     }
 }

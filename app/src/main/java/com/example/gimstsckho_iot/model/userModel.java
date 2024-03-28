@@ -6,6 +6,15 @@ public class userModel {
     private String phoneNumber;
     private String userName;
     private Timestamp creatTimer;
+    private String avatarUser;
+
+    public String getAvatarUser() {
+        return avatarUser;
+    }
+
+    public void setAvatarUser(String avatarUser) {
+        this.avatarUser = avatarUser;
+    }
 
     public userModel() {
     }
@@ -14,6 +23,7 @@ public class userModel {
         this.phoneNumber = phoneNumber;
         this.userName = userName;
         this.creatTimer = creatTimer;
+//        this.avatarUser = avatarUser;
     }
 
     public String getPhoneNumber() {
