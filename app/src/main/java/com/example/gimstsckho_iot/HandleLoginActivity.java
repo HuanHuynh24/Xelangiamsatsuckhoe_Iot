@@ -168,12 +168,10 @@ public class HandleLoginActivity extends AppCompatActivity {
                     public void onCallback(String imageUser) {
                         if(imageUser != null) {
                             imageAvatarUser = imageUser;
-
-                            Intent intent = new Intent(HandleLoginActivity.this, MainActivity.class);
-                            SaveSharedPreferences.SaveSharedPreferences(HandleLoginActivity.this, phonenumber, username, imageAvatarUser);
-                            startActivity(intent);
-                        } else {
                         }
+                        Intent intent = new Intent(HandleLoginActivity.this, MainActivity.class);
+                        SaveSharedPreferences.SaveSharedPreferences(HandleLoginActivity.this, handlePhonenumber.handlegetPhonenumber(phonenumber) , username, imageAvatarUser);
+                        startActivity(intent);
                     }
                 });
             } else {

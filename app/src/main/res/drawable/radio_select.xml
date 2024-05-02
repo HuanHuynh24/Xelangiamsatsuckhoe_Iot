@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Trạng thái không được chọn -->
+    <item android:state_checked="false">
+        <shape android:shape="oval">
+            <solid android:color="@android:color/white" />
+            <!-- Màu của RadioButton khi không được chọn -->
+            <stroke android:color="@color/my_primary" android:width="2dp" />
+            <!-- Màu viền của RadioButton khi không được chọn -->
+            <size android:width="20dp" android:height="20dp"/>
+            <!-- Kích thước của RadioButton -->
+        </shape>
+    </item>
+    <!-- Trạng thái được chọn -->
+    <item android:state_checked="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/black" />
+            <!-- Màu của RadioButton khi được chọn -->
+            <stroke android:color="@color/white" android:width="2dp" />
+            <!-- Màu viền của RadioButton khi được chọn -->
+            <size android:width="20dp" android:height="20dp"/>
+            <!-- Kích thước của RadioButton -->
+        </shape>
+    </item>
+</selector>

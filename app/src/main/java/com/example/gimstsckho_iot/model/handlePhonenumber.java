@@ -12,4 +12,14 @@ public class handlePhonenumber {
         }
         return s;
     }
+    public static String handlegetPhonenumber(String StringPhoneNumber){
+
+        String s="0";
+        int i =4;
+        while (i<StringPhoneNumber.length()){
+            s+=StringPhoneNumber.substring(i, i+3);
+            i+=4;
+        }
+        return s;
+    }
 }

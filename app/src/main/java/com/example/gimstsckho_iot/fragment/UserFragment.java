@@ -21,17 +21,23 @@ import androidx.fragment.app.Fragment;
 
 import com.example.gimstsckho_iot.OptionLoginActivity;
 import com.example.gimstsckho_iot.R;
+import com.example.gimstsckho_iot.SelectInfoUser;
 import com.example.gimstsckho_iot.model.ItemAdapterOption;
 import com.example.gimstsckho_iot.Adapter.myAdapter_Listview;
 import com.example.gimstsckho_iot.model.SaveSharedPreferences;
+import com.example.gimstsckho_iot.util.FirebaseUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserFragment extends Fragment {
@@ -53,7 +59,7 @@ public class UserFragment extends Fragment {
         img_avatar = rootview.findViewById(R.id.image_user);
 
         sharedPreferences = requireContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
-
+        getUserInfo();
         setUserInfo();
 
         img_avatar.setOnClickListener(v -> {
@@ -66,7 +72,32 @@ public class UserFragment extends Fragment {
 
         return rootview;
     }
+    public void getUserInfo(){
+        DocumentReference userDocRef = FirebaseFirestore.getInstance().collection("users").document(FirebaseUtil.currentUserId().getUid());
 
+        userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String username = document.getString("userFullName");
+                        String diachi = document.getString("diachi");
+                        String Ngaysinh = document.getString("Ngaysinh");
+                        String gioitinh = document.getString("gioitinh");
+                        SaveSharedPreferences.setuserFullName(requireContext(), username);
+                        SaveSharedPreferences.setgioitinh(requireContext(), gioitinh);
+                        SaveSharedPreferences.setdiachi(requireContext(), diachi);
+                        SaveSharedPreferences.setngaysinh(requireContext(), Ngaysinh);
+                    } else {
+                        Toast.makeText(requireContext(), "Không tồm tại", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
     private void setUserInfo() {
         String username = sharedPreferences.getString("userName", null);
         String phonenumber = sharedPreferences.getString("phone", null);
@@ -102,7 +133,10 @@ public class UserFragment extends Fragment {
         myAdapter_Listview myAdapterListview1 = new myAdapter_Listview(getActivity(), myArray1, R.layout.backgroud_item_option);
         lv_overview.setAdapter(myAdapterListview1);
 
-//        lv_account.setOnItemClickListener();
+        lv_overview.setOnItemClickListener((parent, view, position, id) -> {
+           Intent intent = new Intent(requireContext(), SelectInfoUser.class);
+           startActivity(intent);
+       });
     }
 
     private void logout() {
@@ -143,7 +177,8 @@ public class UserFragment extends Fragment {
         userDocRef.update("avatarUser", imageUrl)
                 .addOnSuccessListener(aVoid -> {
 //                    sharedPreferences.edit().putString("image", imageUrl).apply();
-                    SaveSharedPreferences.SaveSharedPreferences(requireContext(), info_username.getText().toString(), phonenumber_user.getText().toString(), imageUrl );
+//                    SaveSharedPreferences.SaveSharedPreferences(requireContext(), info_username.getText().toString(), phonenumber_user.getText().toString(), imageUrl );
+                   SaveSharedPreferences.setimageUser(requireContext(), imageUrl);
                     Picasso.get().load(imageUrl).into(img_avatar);
                 })
                 .addOnFailureListener(e -> {

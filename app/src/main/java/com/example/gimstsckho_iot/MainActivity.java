@@ -3,7 +3,11 @@ package com.example.gimstsckho_iot;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,11 +24,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     BottomNavigationView bottomNavigationView;
     Connection connection;
+    Fragment selectedFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,33 +45,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // setOnclickNavigation Bottom
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.Home);
-
-        // Xử lý dữ liệu trên cơ sở dũ liệu
-//        show();
-
-      
-   
-    }
-
-
-    public void show(){
-        ConSQL c= new ConSQL();
-        connection = c.conclass();
-        if(c!=null){
-            try{
-                String sqlstatement = "Select * from BacSi";
-                Statement smt = connection.createStatement();
-                ResultSet set = smt.executeQuery(sqlstatement);
-                while (set.next()){
-                    Toast.makeText(this, set.getString(2), Toast.LENGTH_SHORT).show();
-                }
-                connection.close();
-            }catch (Exception e){
-                Log.e("Error is", e.getMessage());
+        Intent intent = getIntent();
+        if(intent != null){
+            String fragment = intent.getStringExtra("fragment");
+            if(Objects.equals(fragment, "UserFragment")){
+                bottomNavigationView.setSelectedItemId(R.id.person);
             }
-        } 
-
-
+        }
     }
 
 

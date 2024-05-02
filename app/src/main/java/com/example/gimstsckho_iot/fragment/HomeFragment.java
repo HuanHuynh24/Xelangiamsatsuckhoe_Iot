@@ -1,5 +1,7 @@
 package com.example.gimstsckho_iot.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.gimstsckho_iot.model.ItemAdapterHome;
 import com.example.gimstsckho_iot.R;
 import com.example.gimstsckho_iot.Adapter.myAdapter;
+import com.example.gimstsckho_iot.model.SaveSharedPreferences;
 import com.example.gimstsckho_iot.model.showEnableGPSDialog;
 
 import java.util.ArrayList;
@@ -26,7 +30,6 @@ public class HomeFragment extends Fragment {
     GridView gv;
     ArrayList<ItemAdapterHome> mylist;
     myAdapter myArrayAdapter;
-
 
 
     @Override
@@ -44,6 +47,7 @@ public class HomeFragment extends Fragment {
         if(!showEnableGPSDialog.isGPSEnabled()){
             showEnableGPSDialog.handleEnableGPSDialog();
         }
+
         gv = rootView.findViewById(R.id.girdview);
         mylist = new ArrayList<>();
         for(int i=0;i< imgName.length; i++){
