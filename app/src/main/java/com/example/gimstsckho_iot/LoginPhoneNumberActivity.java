@@ -9,7 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.example.gimstsckho_iot.util.FirebaseUtil;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hbb20.CountryCodePicker;
+
+import java.util.List;
 
 public class LoginPhoneNumberActivity extends AppCompatActivity {
 
@@ -34,10 +40,34 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
                 logInPhonenumber.setError("Số điện thoại không chính xác");
                 return;
             }
-            Intent intent = new Intent(LoginPhoneNumberActivity.this, LoginOtpActivity.class);
-            intent.putExtra("phone", countryCodePicker.getFormattedFullNumber());
-            startActivity(intent);
+
+            checkPhonenumeExit(countryCodePicker.getFormattedFullNumber());
+
+
         });
     }
+    private void checkPhonenumeExit(String phoneNumber){
+        FirebaseUtil.userQueryUser()
+                .whereEqualTo("phoneNumber", phoneNumber)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
+                        if(snapshots.isEmpty()){
+                            handleNotFoundPhoneNumber(phoneNumber);
+                        } else
+                            handleFoundPhoneNumber();
+                    }
+                });
+    }
+    private void handleNotFoundPhoneNumber(String phoneNumber){
+        Intent intent = new Intent(LoginPhoneNumberActivity.this, LoginOtpActivity.class);
+        intent.putExtra("phone", phoneNumber);
+        startActivity(intent);
 
+    }
+    private void handleFoundPhoneNumber(){
+        logInPhonenumber.setError("Số điện thoại đã tồn tại!!!");
+    }
 }

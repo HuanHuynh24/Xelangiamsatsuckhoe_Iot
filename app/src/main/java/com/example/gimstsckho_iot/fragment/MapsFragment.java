@@ -24,6 +24,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback{
@@ -47,13 +52,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-         sharedPreferences = requireContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
 
 
         locationPermissions = new LocationPermissions(getActivity());
         locationPermissions.HandleLocationPermissions();
 
-         username = sharedPreferences.getString("userName","");
+        username = sharedPreferences.getString("userName","");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -74,18 +79,35 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
                 } else {
                     markerUser.setPosition(latLng);
                 }
-                if(markerWheelchair != null){
-                    LatLng position1 = markerUser.getPosition();
-                    LatLng position2 = markerWheelchair.getPosition();
-                    distance =  calculateDistance(position1, position2);
-                }
+//                if(markerWheelchair != null){
+//                    LatLng position1 = markerUser.getPosition();
+//                    LatLng position2 = markerWheelchair.getPosition();
+//                    distance =  calculateDistance(position1, position2);
+//                }
             }
         });
         locationUpdater.startUpdatingLocation();
-        LatLng position2 = new LatLng(10.762622, 106.660172);
-        markerWheelchair = mMap.addMarker(new MarkerOptions().position(position2).title(username+" - Thiết bị")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position2, 13f));
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference userRef = database.child("users").child(username);
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (markerWheelchair != null) {
+                    markerWheelchair.remove();
+                }
+                LatLng position2 = new LatLng(snapshot.child("locationGPS").child("latitude").getValue(Double.class), snapshot.child("locationGPS").child("longitude").getValue(Double.class));
+                markerWheelchair = mMap.addMarker(new MarkerOptions().position(position2).title(username+" - Thiết bị")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position2, 11f));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     private float calculateDistance(LatLng position1, LatLng position2) {

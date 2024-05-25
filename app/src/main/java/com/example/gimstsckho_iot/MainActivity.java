@@ -20,6 +20,7 @@ import com.example.gimstsckho_iot.fragment.SecondFragment;
 import com.example.gimstsckho_iot.model.ConSQL;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView = findViewById(R.id.navigation_bottom);
 
 
-
         // setOnclickNavigation Bottom
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.Home);
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 bottomNavigationView.setSelectedItemId(R.id.person);
             }
         }
+
+
     }
 
 

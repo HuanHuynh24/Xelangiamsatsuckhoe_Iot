@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class SelectInfoUser extends AppCompatActivity {
@@ -42,6 +44,21 @@ public class SelectInfoUser extends AppCompatActivity {
         username = findViewById(R.id.username);
         numberphone = findViewById(R.id.numberphone);
         dateofbirth = findViewById(R.id.dateofbirth);
+        dateofbirth.setOnClickListener(view -> {
+            // Lấy ngày hiện tại
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            // Tạo DatePickerDialog và hiển thị
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                        String selectedDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                        dateofbirth.setText(selectedDate);
+                    }, year, month, day);
+            datePickerDialog.show();
+        });
         address = findViewById(R.id.address);
         male = findViewById(R.id.male);
         fermale = findViewById(R.id.fermale);
@@ -114,6 +131,7 @@ public class SelectInfoUser extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                 });
+        Toast.makeText(this, "Lưu thông tin thành công", Toast.LENGTH_SHORT).show();
     }
     private void informationSettings() {
         String name = sharedPreferences.getString("userFullName", null);

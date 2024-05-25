@@ -58,14 +58,18 @@ public class UserFragment extends Fragment {
         phonenumber_user = rootview.findViewById(R.id.phonenumber_user);
         img_avatar = rootview.findViewById(R.id.image_user);
 
-        sharedPreferences = requireContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
-        getUserInfo();
-        setUserInfo();
+       if (isAdded()){
+           sharedPreferences = requireContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
+           getUserInfo();
+           setUserInfo();
+       }
 
         img_avatar.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+           if (isAdded()){
+               Intent intent = new Intent(Intent.ACTION_PICK);
+               intent.setType("image/*");
+               startActivityForResult(intent, PICK_IMAGE_REQUEST);
+           }
         });
 
         setupOptionsListView(rootview);
@@ -73,31 +77,33 @@ public class UserFragment extends Fragment {
         return rootview;
     }
     public void getUserInfo(){
-        DocumentReference userDocRef = FirebaseFirestore.getInstance().collection("users").document(FirebaseUtil.currentUserId().getUid());
+            DocumentReference userDocRef = FirebaseFirestore.getInstance().collection("users").document(FirebaseUtil.currentUserId().getUid());
 
-        userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        String username = document.getString("userFullName");
-                        String diachi = document.getString("diachi");
-                        String Ngaysinh = document.getString("Ngaysinh");
-                        String gioitinh = document.getString("gioitinh");
-                        SaveSharedPreferences.setuserFullName(requireContext(), username);
-                        SaveSharedPreferences.setgioitinh(requireContext(), gioitinh);
-                        SaveSharedPreferences.setdiachi(requireContext(), diachi);
-                        SaveSharedPreferences.setngaysinh(requireContext(), Ngaysinh);
+            userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if(isAdded()){
+                            if (document.exists()) {
+                                String username = document.getString("userFullName");
+                                String diachi = document.getString("diachi");
+                                String Ngaysinh = document.getString("Ngaysinh");
+                                String gioitinh = document.getString("gioitinh");
+                                SaveSharedPreferences.setuserFullName(requireContext(), username);
+                                SaveSharedPreferences.setgioitinh(requireContext(), gioitinh);
+                                SaveSharedPreferences.setdiachi(requireContext(), diachi);
+                                SaveSharedPreferences.setngaysinh(requireContext(), Ngaysinh);
+                            } else {
+                                Toast.makeText(requireContext(), "Không tồm tại", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     } else {
-                        Toast.makeText(requireContext(), "Không tồm tại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "thất bại", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(requireContext(), "thất bại", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-    }
+            });
+        }
     private void setUserInfo() {
         String username = sharedPreferences.getString("userName", null);
         String phonenumber = sharedPreferences.getString("phone", null);
@@ -186,3 +192,157 @@ public class UserFragment extends Fragment {
                 });
     }
 }
+//public class UserFragment extends Fragment {
+//
+//    private final int PICK_IMAGE_REQUEST = 1;
+//
+//    private ImageView img_avatar;
+//    private TextView info_username;
+//    private TextView phonenumber_user;
+//    private SharedPreferences sharedPreferences;
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        View rootview = inflater.inflate(R.layout.fragment_user, container, false);
+//
+//        info_username = rootview.findViewById(R.id.info_username);
+//        phonenumber_user = rootview.findViewById(R.id.phonenumber_user);
+//        img_avatar = rootview.findViewById(R.id.image_user);
+//
+//        sharedPreferences = requireContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
+//        getUserInfo();
+//        setUserInfo();
+//
+//        img_avatar.setOnClickListener(v -> {
+//            Intent intent = new Intent(Intent.ACTION_PICK);
+//            intent.setType("image/*");
+//            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+//        });
+//
+//        setupOptionsListView(rootview);
+//
+//        return rootview;
+//    }
+//
+//    public void getUserInfo() {
+//        DocumentReference userDocRef = FirebaseFirestore.getInstance().collection("users").document(FirebaseUtil.currentUserId().getUid());
+//        userDocRef.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                DocumentSnapshot document = task.getResult();
+//                if (document.exists()) {
+//                    String username = document.getString("userFullName");
+//                    String diachi = document.getString("diachi");
+//                    String Ngaysinh = document.getString("Ngaysinh");
+//                    String gioitinh = document.getString("gioitinh");
+//                    SaveSharedPreferences.setuserFullName(requireContext(), username);
+//                    SaveSharedPreferences.setgioitinh(requireContext(), gioitinh);
+//                    SaveSharedPreferences.setdiachi(requireContext(), diachi);
+//                    SaveSharedPreferences.setngaysinh(requireContext(), Ngaysinh);
+//                } else {
+//                    if (isAdded()) {
+//                        Toast.makeText(requireContext(), "Không tồn tại", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            } else {
+//                if (isAdded()) {
+//                    Toast.makeText(requireContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//    }
+//
+//    private void setUserInfo() {
+//        String username = sharedPreferences.getString("userName", null);
+//        String phonenumber = sharedPreferences.getString("phone", null);
+//
+//        if (username != null)
+//            info_username.setText("Tên người dùng: " + username);
+//        if (phonenumber != null)
+//            phonenumber_user.setText("Số điện thoại: " + phonenumber);
+//
+//        String imageUrl = sharedPreferences.getString("avatarUser", "");
+//        if (!imageUrl.isEmpty()) {
+//            Picasso.get().load(imageUrl).into(img_avatar);
+//        }
+//    }
+//
+//    private void setupOptionsListView(View rootview) {
+//        ListView lv_account = rootview.findViewById(R.id.lv_account);
+//
+//        ArrayList<ItemAdapterOption> myArray = new ArrayList<>();
+//        myArray.add(new ItemAdapterOption(R.drawable.ic_person, "Đăng xuất"));
+//
+//        myAdapter_Listview myAdapterListview = new myAdapter_Listview(getActivity(), myArray, R.layout.backgroud_item_option);
+//        lv_account.setAdapter(myAdapterListview);
+//
+//        lv_account.setOnItemClickListener((parent, view, position, id) -> logout());
+//
+//        ListView lv_overview = rootview.findViewById(R.id.lv_overview);
+//
+//        ArrayList<ItemAdapterOption> myArray1 = new ArrayList<>();
+//        myArray1.add(new ItemAdapterOption(R.drawable.ic_person, "Thông tin cá nhân"));
+//
+//        myAdapter_Listview myAdapterListview1 = new myAdapter_Listview(getActivity(), myArray1, R.layout.backgroud_item_option);
+//        lv_overview.setAdapter(myAdapterListview1);
+//
+//        lv_overview.setOnItemClickListener((parent, view, position, id) -> {
+//            if (isAdded()) {
+//                Intent intent = new Intent(requireContext(), SelectInfoUser.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
+//
+//    private void logout() {
+//        FirebaseAuth.getInstance().signOut();
+//        sharedPreferences.edit().clear().apply();
+//
+//        Intent intent = new Intent(getActivity(), OptionLoginActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//    }
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+//            Uri selectedImageUri = data.getData();
+//            uploadImageToFirebaseStorage(selectedImageUri);
+//        }
+//    }
+//
+//    private void uploadImageToFirebaseStorage(Uri imageUri) {
+//        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("images").child(UUID.randomUUID().toString());
+//        storageRef.putFile(imageUri)
+//                .addOnSuccessListener(taskSnapshot -> {
+//                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+//                        String imageUrl = uri.toString();
+//                        updateAvatarUrlInFirestore(imageUrl);
+//                    });
+//                })
+//                .addOnFailureListener(e -> {
+//                    if (isAdded()) {
+//                        Toast.makeText(getContext(), "Error uploading image", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+//
+//    private void updateAvatarUrlInFirestore(String imageUrl) {
+//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        DocumentReference userDocRef = FirebaseFirestore.getInstance().collection("users").document(userId);
+//        userDocRef.update("avatarUser", imageUrl)
+//                .addOnSuccessListener(aVoid -> {
+//                    if (isAdded()) {
+//                        SaveSharedPreferences.setimageUser(requireContext(), imageUrl);
+//                        Picasso.get().load(imageUrl).into(img_avatar);
+//                    }
+//                })
+//                .addOnFailureListener(e -> {
+//                    if (isAdded()) {
+//                        Toast.makeText(getContext(), "Error updating avatar", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+//}
+//

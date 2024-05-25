@@ -13,13 +13,18 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.gimstsckho_iot.model.BPressure;
 import com.example.gimstsckho_iot.model.SaveSharedPreferences;
+import com.example.gimstsckho_iot.model.userInformation;
 import com.example.gimstsckho_iot.model.userModel;
+import com.example.gimstsckho_iot.util.FirebaseHelper;
 import com.example.gimstsckho_iot.util.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -90,9 +95,10 @@ public class LoginUserActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginUserActivity.this, MainActivity.class);
                     SaveSharedPreferences.SaveSharedPreferences(LoginUserActivity.this, phoneNumber, userName, null);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    FirebaseHelper firebaseHelper = new FirebaseHelper();
+                    firebaseHelper.addUser(userName);
+
                     startActivity(intent);
-                } else{
-                    Log.v("kiemtra","ghi thất bại");
                 }
             }
         });
